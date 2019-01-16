@@ -48,4 +48,5 @@ int8_t DataController::getAxisValue(AXIS a)
     case AXIS::PITCH: return m_axisPitch + m_trimPitch;
     case AXIS::ROLL: return m_axisRoll + m_trimRoll;
   }
+  return 0;
 }

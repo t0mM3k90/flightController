@@ -10,6 +10,15 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->left_plot->enableAxis(QwtPlot::yLeft, false);
   ui->right_plot->enableAxis(QwtPlot::xBottom, false);
   ui->right_plot->enableAxis(QwtPlot::yLeft, false);
+  ui->left_plot->setCanvasBackground(QBrush(QColor(26,158,178)));
+  ui->right_plot->setCanvasBackground(QBrush(QColor(26,158,178)));
+
+  QwtPlotGrid *grid1 = new QwtPlotGrid();
+  QwtPlotGrid *grid2 = new QwtPlotGrid();
+  grid1->setPen(Qt::lightGray,1.0,Qt::PenStyle::DotLine);
+  grid2->setPen(Qt::lightGray,1.0,Qt::PenStyle::DotLine);
+  grid1->attach(ui->left_plot);
+  grid2->attach(ui->right_plot);
 
   ui->statusBar->addWidget(new QLabel("(0,0,0,0,0,0,0,0)",this));
 }
