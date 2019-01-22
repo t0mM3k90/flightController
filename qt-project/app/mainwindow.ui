@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1044</width>
-    <height>606</height>
+    <width>1160</width>
+    <height>748</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="plots_trims">
       <item>
        <widget class="QWidget" name="leftPlot" native="true">
         <property name="sizePolicy">
@@ -75,6 +75,9 @@
            <property name="minimum">
             <double>0.000000000000000</double>
            </property>
+           <property name="maximum">
+            <double>256.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="2" column="1">
@@ -105,10 +108,10 @@
             <enum>Qt::Horizontal</enum>
            </property>
            <property name="minimum">
-            <double>-50.000000000000000</double>
+            <double>-128.000000000000000</double>
            </property>
            <property name="maximum">
-            <double>50.000000000000000</double>
+            <double>127.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -210,10 +213,10 @@
             <enum>Qt::Vertical</enum>
            </property>
            <property name="minimum">
-            <double>-50.000000000000000</double>
+            <double>-128.000000000000000</double>
            </property>
            <property name="maximum">
-            <double>50.000000000000000</double>
+            <double>127.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -233,10 +236,10 @@
             <enum>Qt::Horizontal</enum>
            </property>
            <property name="minimum">
-            <double>-50.000000000000000</double>
+            <double>-128.000000000000000</double>
            </property>
            <property name="maximum">
-            <double>50.000000000000000</double>
+            <double>127.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -279,64 +282,152 @@
       <item>
        <layout class="QVBoxLayout" name="ch1_4">
         <item>
-         <widget class="QProgressBar" name="channel1">
-          <property name="value">
-           <number>0</number>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QProgressBar" name="channel1">
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="invertChannel1">
+            <property name="text">
+             <string>invert</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QProgressBar" name="channel2">
-          <property name="value">
-           <number>0</number>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QProgressBar" name="channel2">
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="invertChannel2">
+            <property name="text">
+             <string>invert</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QProgressBar" name="channel3">
-          <property name="value">
-           <number>0</number>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QProgressBar" name="channel3">
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="invertChannel3">
+            <property name="text">
+             <string>invert</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QProgressBar" name="channel4">
-          <property name="value">
-           <number>0</number>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QProgressBar" name="channel4">
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="invertChannel4">
+            <property name="text">
+             <string>invert</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="ch5_8">
         <item>
-         <widget class="QProgressBar" name="channel5">
-          <property name="value">
-           <number>0</number>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QProgressBar" name="channel5">
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="invertChannel5">
+            <property name="text">
+             <string>invert</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QProgressBar" name="channel6">
-          <property name="value">
-           <number>0</number>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QProgressBar" name="channel6">
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="invertChannel6">
+            <property name="text">
+             <string>invert</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QProgressBar" name="channel7">
-          <property name="value">
-           <number>0</number>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <item>
+           <widget class="QProgressBar" name="channel7">
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="invertChannel7">
+            <property name="text">
+             <string>invert</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QProgressBar" name="channel8">
-          <property name="value">
-           <number>0</number>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <item>
+           <widget class="QProgressBar" name="channel8">
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="invertChannel8">
+            <property name="text">
+             <string>invert</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -349,8 +440,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1044</width>
-     <height>22</height>
+     <width>1160</width>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
