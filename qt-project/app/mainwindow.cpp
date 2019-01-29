@@ -8,6 +8,29 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+  for(int x=-100;x<=100;++x)
+  {
+    m_xData.append(x);
+    m_thrustCurveYData.append(x);
+    m_yawCurveYData.append(x);
+    m_pitchCurveYData.append(x);
+    m_rollCurveYData.append(x);
+  }
+  m_thrustCurve.setSamples(m_xData, m_thrustCurveYData);
+  m_yawCurve.setSamples(m_xData, m_yawCurveYData);
+  m_pitchCurve.setSamples(m_xData, m_pitchCurveYData);
+  m_rollCurve.setSamples(m_xData, m_rollCurveYData);
+
+  m_thrustCurve.setPen(Qt::black, 1.0);
+  m_yawCurve.setPen(Qt::red, 1.0);
+  m_pitchCurve.setPen(Qt::blue, 1.0);
+  m_rollCurve.setPen(Qt::yellow, 1.0);
+
+  m_thrustCurve.attach(ui->left_plot);
+  m_yawCurve.attach(ui->left_plot);
+  m_pitchCurve.attach(ui->right_plot);
+  m_rollCurve.attach(ui->right_plot);
+
   ui->trim_thrust->setRange(MIN_THRUST, MAX_THRUST);
   ui->trim_yaw->setRange(MIN_YAW, MAX_YAW);
   ui->trim_pitch->setRange(MIN_PITCH, MAX_PITCH);
@@ -22,10 +45,33 @@ MainWindow::MainWindow(QWidget *parent) :
 
   QwtPlotGrid *grid1 = new QwtPlotGrid();
   QwtPlotGrid *grid2 = new QwtPlotGrid();
-  grid1->setPen(Qt::lightGray,1.0,Qt::PenStyle::DotLine);
-  grid2->setPen(Qt::lightGray,1.0,Qt::PenStyle::DotLine);
+  grid1->setMajorPen(Qt::black,1.0,Qt::PenStyle::SolidLine);
+  grid1->setMinorPen(Qt::lightGray,1.0,Qt::PenStyle::DotLine);
+  grid2->setMajorPen(Qt::black,1.0,Qt::PenStyle::SolidLine);
+  grid2->setMinorPen(Qt::lightGray,1.0,Qt::PenStyle::DotLine);
+
+  grid1->enableXMin(true);
+  grid1->enableYMin(true);
+  grid2->enableXMin(true);
+  grid2->enableYMin(true);
+
+  QwtScaleDiv div(-100,100);
+  QList<double> ticks[3];
+  ticks[QwtScaleDiv::MajorTick] << 0;
+  ticks[QwtScaleDiv::MediumTick] << -100 << -80 << -60 << -40 << -20 << 20 << 40 << 60 << 80 << 100;
+  ticks[QwtScaleDiv::MinorTick] << -90 << -70 << -50 << -30 << -10 << 10 << 30 << 50 << 70 << 90 ;
+  div.setTicks(QwtScaleDiv::MajorTick,ticks[QwtScaleDiv::MajorTick]);
+  div.setTicks(QwtScaleDiv::MediumTick,ticks[QwtScaleDiv::MediumTick]);
+  div.setTicks(QwtScaleDiv::MinorTick,ticks[QwtScaleDiv::MinorTick]);
+  ui->left_plot->setAxisScaleDiv(QwtPlot::xBottom, div);
+  ui->left_plot->setAxisScaleDiv(QwtPlot::yLeft, div);
+  ui->right_plot->setAxisScaleDiv(QwtPlot::xBottom, div);
+  ui->right_plot->setAxisScaleDiv(QwtPlot::yLeft, div);
   grid1->attach(ui->left_plot);
   grid2->attach(ui->right_plot);
+
+  //(better viewability on ASUS-Netbook)
+  this->setGeometry(0,60,1018,689);
 
   on_action_Clear_Trims_triggered();
 }

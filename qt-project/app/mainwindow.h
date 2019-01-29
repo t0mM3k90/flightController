@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <qwt/qwt_plot_curve.h>
 #include "datacontroller.h"
 
 namespace Ui {
@@ -13,6 +14,17 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 private:
   void updateValueWidgets();
+
+  QVector<double> m_xData;
+  QVector<double> m_thrustCurveYData;
+  QVector<double> m_yawCurveYData;
+  QVector<double> m_pitchCurveYData;
+  QVector<double> m_rollCurveYData;
+
+  QwtPlotCurve m_thrustCurve;
+  QwtPlotCurve m_yawCurve;
+  QwtPlotCurve m_pitchCurve;
+  QwtPlotCurve m_rollCurve;
 public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
