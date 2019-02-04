@@ -26,15 +26,20 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         datacontroller.cpp \
-        datamodels.cpp
+        datamodels.cpp \
+        settingsdialog.cpp \
+        settingsmanager.cpp
 
 HEADERS += \
         mainwindow.h \
         datacontroller.h \
-        datamodels.h
+        datamodels.h \
+        settingsdialog.h \
+        settingsmanager.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+        settingsdialog.ui
 
 
 

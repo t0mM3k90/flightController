@@ -46,8 +46,18 @@ private slots:
   void on_invertChannel7_stateChanged(int state);
   void on_invertChannel8_stateChanged(int state);
 
+  void on_action_Settings_triggered();
+
+public slots:
+  void onThrustExpoChanged(int value);
+  void onYawExpoChanged(int value);
+  void onPitchExpoChanged(int value);
+  void onRollExpoChanged(int value);
+
 private:
   Ui::MainWindow *ui;
+
+  void recalculateCurve(int p, QVector<double> &yData);
 };
 
 #endif // MAINWINDOW_H

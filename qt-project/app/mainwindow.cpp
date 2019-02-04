@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qwt/qwt_plot_grid.h"
+#include "settingsdialog.h"
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -194,4 +196,55 @@ void MainWindow::on_invertChannel8_stateChanged(int state)
 {
   DataController::getInstance().invertChannel(model::CHANNELS::CH8, static_cast<bool>(state));
   ui->channel8->setValue(static_cast<int>(DataController::getInstance().getChannelValue(model::CHANNELS::CH8)*100));
+}
+
+void MainWindow::onThrustExpoChanged(int value)
+{
+  recalculateCurve(value, m_thrustCurveYData);
+  m_thrustCurve.setSamples(m_xData, m_thrustCurveYData);
+  ui->left_plot->replot();
+
+}
+
+void MainWindow::onYawExpoChanged(int value)
+{
+  recalculateCurve(value, m_yawCurveYData);
+  m_yawCurve.setSamples(m_xData, m_yawCurveYData);
+  ui->left_plot->replot();
+}
+
+void MainWindow::onPitchExpoChanged(int value)
+{
+  recalculateCurve(value, m_pitchCurveYData);
+  m_pitchCurve.setSamples(m_xData, m_pitchCurveYData);
+  ui->right_plot->replot();
+}
+
+void MainWindow::onRollExpoChanged(int value)
+{
+  recalculateCurve(value, m_rollCurveYData);
+  m_rollCurve.setSamples(m_xData, m_rollCurveYData);
+  ui->right_plot->replot();
+}
+
+void MainWindow::on_action_Settings_triggered()
+{
+    SettingsDialog *dialog = new SettingsDialog(this);
+    dialog->show();
+}
+
+// ************************** PRIVATE GUI FUNCTIONS **************************
+
+void MainWindow::recalculateCurve(int p, QVector<double> &yData)
+{
+  auto f1 = [](double x){return x;};
+  auto f2 = [](double x){return 100*std::pow(x/100.0, 3);};
+  auto sig = [](int p){return 2/(1 + std::exp(-1*p/30.0))-1;};
+
+  yData.clear();
+  for(int x=-100; x<=100; ++x)
+  {
+    double y = f1(x) + (f2(x) - f1(x))*sig(p);
+    yData.append(y);
+  }
 }
