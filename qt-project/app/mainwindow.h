@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <qwt/qwt_plot_curve.h>
+#include <qwt/qwt_plot_marker.h>
+#include <qwt/qwt_symbol.h>
 #include "datacontroller.h"
 
 namespace Ui {
@@ -25,6 +27,17 @@ private:
   QwtPlotCurve m_yawCurve;
   QwtPlotCurve m_pitchCurve;
   QwtPlotCurve m_rollCurve;
+
+  QwtPlotMarker *m_thrustMarker;
+  QwtPlotMarker *m_yawMarker;
+  QwtPlotMarker *m_pitchMarker;
+  QwtPlotMarker *m_rollMarker;
+
+  QwtSymbol *m_thrustMarkerSymbol;
+  QwtSymbol *m_yawMarkerSymbol;
+  QwtSymbol *m_pitchMarkerSymbol;
+  QwtSymbol *m_rollMarkerSymbol;
+
 public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();

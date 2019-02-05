@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+  //initialize the vectors for the curves
   for(int x=-100;x<=100;++x)
   {
     m_xData.append(x);
@@ -23,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
   m_pitchCurve.setSamples(m_xData, m_pitchCurveYData);
   m_rollCurve.setSamples(m_xData, m_rollCurveYData);
 
+  //setting colors for the curves
   m_thrustCurve.setPen(Qt::black, 1.0);
   m_yawCurve.setPen(Qt::red, 1.0);
   m_pitchCurve.setPen(Qt::blue, 1.0);
@@ -33,11 +35,13 @@ MainWindow::MainWindow(QWidget *parent) :
   m_pitchCurve.attach(ui->right_plot);
   m_rollCurve.attach(ui->right_plot);
 
+  //set constraints for the trim-wheels
   ui->trim_thrust->setRange(MIN_THRUST, MAX_THRUST);
   ui->trim_yaw->setRange(MIN_YAW, MAX_YAW);
   ui->trim_pitch->setRange(MIN_PITCH, MAX_PITCH);
   ui->trim_roll->setRange(MIN_ROLL, MAX_ROLL);
 
+  //draw grids into plot windows
   ui->left_plot->enableAxis(QwtPlot::xBottom, false);
   ui->left_plot->enableAxis(QwtPlot::yLeft, false);
   ui->right_plot->enableAxis(QwtPlot::xBottom, false);
@@ -72,6 +76,39 @@ MainWindow::MainWindow(QWidget *parent) :
   grid1->attach(ui->left_plot);
   grid2->attach(ui->right_plot);
 
+  //draw markers into the grids
+  m_thrustMarker = new QwtPlotMarker();
+  m_yawMarker = new QwtPlotMarker();
+  m_pitchMarker = new QwtPlotMarker();
+  m_rollMarker = new QwtPlotMarker();
+
+  m_thrustMarkerSymbol = new QwtSymbol(QwtSymbol::Style::Ellipse);
+  m_yawMarkerSymbol = new QwtSymbol(QwtSymbol::Style::Ellipse);
+  m_pitchMarkerSymbol = new QwtSymbol(QwtSymbol::Style::Ellipse);
+  m_rollMarkerSymbol = new QwtSymbol(QwtSymbol::Style::Ellipse);
+
+  m_thrustMarkerSymbol->setSize(5,5);
+  m_thrustMarkerSymbol->setPen(Qt::black);
+  m_thrustMarkerSymbol->setBrush(Qt::black);
+  m_yawMarkerSymbol->setSize(5,5);
+  m_yawMarkerSymbol->setPen(Qt::red);
+  m_yawMarkerSymbol->setBrush(Qt::red);
+  m_pitchMarkerSymbol->setSize(5,5);
+  m_pitchMarkerSymbol->setPen(Qt::blue);
+  m_pitchMarkerSymbol->setBrush(Qt::blue);
+  m_rollMarkerSymbol->setSize(5,5);
+  m_rollMarkerSymbol->setPen(Qt::yellow);
+  m_rollMarkerSymbol->setBrush(Qt::yellow);
+
+  m_thrustMarker->setSymbol(m_thrustMarkerSymbol);
+  m_thrustMarker->attach(ui->left_plot);
+  m_yawMarker->setSymbol(m_yawMarkerSymbol);
+  m_yawMarker->attach(ui->left_plot);
+  m_pitchMarker->setSymbol(m_pitchMarkerSymbol);
+  m_pitchMarker->attach(ui->right_plot);
+  m_rollMarker->setSymbol(m_rollMarkerSymbol);
+  m_rollMarker->attach(ui->right_plot);
+
   //(better viewability on ASUS-Netbook)
   this->setGeometry(0,60,1018,689);
 
@@ -99,6 +136,20 @@ void MainWindow::updateValueWidgets()
   ui->channel6->setValue(static_cast<int>(dataCtrl->getChannelValue(model::CHANNELS::CH6)*100));
   ui->channel7->setValue(static_cast<int>(dataCtrl->getChannelValue(model::CHANNELS::CH7)*100));
   ui->channel8->setValue(static_cast<int>(dataCtrl->getChannelValue(model::CHANNELS::CH8)*100));
+
+  //draw markers on plotlines (FIXME: values do not show +/- 100% yet which makes drawing shitty
+  int thrust_x, yaw_x, pitch_x, roll_x;
+  thrust_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::THRUST)*200)-100;
+  m_thrustMarker->setValue(thrust_x, m_thrustCurveYData[thrust_x+100]);
+  yaw_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::YAW)*200)-100;
+  m_yawMarker->setValue(yaw_x, m_yawCurveYData[yaw_x+100]);
+  pitch_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::PITCH)*200)-100;
+  m_pitchMarker->setValue(pitch_x, m_pitchCurveYData[pitch_x+100]);
+  roll_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::ROLL)*200)-100;
+  m_rollMarker->setValue(roll_x, m_rollCurveYData[roll_x+100]);
+  ui->left_plot->replot();
+  ui->right_plot->replot();
+
 }
 
 // ************************** GUI SLOTS **************************
@@ -203,7 +254,6 @@ void MainWindow::onThrustExpoChanged(int value)
   recalculateCurve(value, m_thrustCurveYData);
   m_thrustCurve.setSamples(m_xData, m_thrustCurveYData);
   ui->left_plot->replot();
-
 }
 
 void MainWindow::onYawExpoChanged(int value)
