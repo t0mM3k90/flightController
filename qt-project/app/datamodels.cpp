@@ -21,9 +21,26 @@ int16_t axis::value()
 }
 
 float axis::percentage(){
-  int range = std::abs(m_minThreshold) + std::abs(m_maxThreshold);
-  int offset = (m_value+m_trim) - m_minThreshold;
-  return static_cast<float>(offset) / range;
+  int neg_range = std::abs(m_minThreshold);
+  int pos_range = std::abs(m_maxThreshold);
+  int offset = (m_value+m_trim);
+
+  if(offset < 0)
+  {
+    return static_cast<float>(offset)/neg_range;
+  }
+  else if (offset > 0)
+  {
+    return static_cast<float>(offset)/pos_range;
+  }
+  else
+  {
+    return 0;
+  }
+
+  //int range = std::abs(m_minThreshold) + std::abs(m_maxThreshold);
+  //int offset = (m_value+m_trim) - m_minThreshold;
+  //return static_cast<float>(offset) / range;
 }
 
 

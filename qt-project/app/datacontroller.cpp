@@ -31,7 +31,7 @@ void DataController::trimValueChanged(AXIS a, int16_t trim)
   axis* ax = getAxis(a);
   ax->m_trim = trim;
   float perc = ax->percentage();
-  getChannel(a)->percentage(perc);
+  getChannel(a)->percentage(0.5f + 0.5f*perc);
 }
 
 int16_t DataController::getRawAxisValue(AXIS a)

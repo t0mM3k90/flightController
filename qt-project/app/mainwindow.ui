@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1160</width>
+    <width>1176</width>
     <height>748</height>
    </rect>
   </property>
@@ -50,6 +50,12 @@
              <verstretch>1</verstretch>
             </sizepolicy>
            </property>
+           <property name="lowerBound">
+            <double>-100.000000000000000</double>
+           </property>
+           <property name="upperBound">
+            <double>100.000000000000000</double>
+           </property>
            <property name="singleSteps">
             <UInt>1</UInt>
            </property>
@@ -73,10 +79,10 @@
             <enum>Qt::Vertical</enum>
            </property>
            <property name="minimum">
-            <double>0.000000000000000</double>
+            <double>-128.000000000000000</double>
            </property>
            <property name="maximum">
-            <double>256.000000000000000</double>
+            <double>127.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -124,10 +130,10 @@
             </sizepolicy>
            </property>
            <property name="lowerBound">
-            <double>-50.000000000000000</double>
+            <double>-100.000000000000000</double>
            </property>
            <property name="upperBound">
-            <double>50.000000000000000</double>
+            <double>100.000000000000000</double>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -188,10 +194,10 @@
          <item row="0" column="1">
           <widget class="QwtSlider" name="pitch_slide">
            <property name="lowerBound">
-            <double>-50.000000000000000</double>
+            <double>-100.000000000000000</double>
            </property>
            <property name="upperBound">
-            <double>50.000000000000000</double>
+            <double>100.000000000000000</double>
            </property>
            <property name="scaleMaxMajor">
             <number>5</number>
@@ -246,10 +252,10 @@
          <item row="1" column="2">
           <widget class="QwtSlider" name="roll_slide">
            <property name="lowerBound">
-            <double>-50.000000000000000</double>
+            <double>-100.000000000000000</double>
            </property>
            <property name="upperBound">
-            <double>50.000000000000000</double>
+            <double>100.000000000000000</double>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -433,6 +439,13 @@
       </item>
      </layout>
     </item>
+    <item>
+     <widget class="QLabel" name="lblChannelOut">
+      <property name="text">
+       <string>(0,0,0,0,0,0,0,0)</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -440,7 +453,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1160</width>
+     <width>1176</width>
      <height>24</height>
     </rect>
    </property>

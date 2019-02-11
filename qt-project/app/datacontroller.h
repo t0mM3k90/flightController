@@ -1,14 +1,14 @@
 #ifndef DATACONTROLLER_H
 #define DATACONTROLLER_H
 
-#define MAX_THRUST 255
-#define MIN_THRUST   0
-#define MAX_YAW    127
-#define MIN_YAW   -128
-#define MAX_PITCH  127
-#define MIN_PITCH -128
-#define MAX_ROLL   127
-#define MIN_ROLL  -128
+#define MAX_THRUST  127
+#define MIN_THRUST -128
+#define MAX_YAW     127
+#define MIN_YAW    -128
+#define MAX_PITCH   127
+#define MIN_PITCH  -128
+#define MAX_ROLL    127
+#define MIN_ROLL   -128
 
 #include <QObject>
 #include <map>

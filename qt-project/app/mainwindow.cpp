@@ -124,9 +124,9 @@ void MainWindow::updateValueWidgets()
 {
   DataController *dataCtrl = &DataController::getInstance();
   ui->thrust_slide->setValue(static_cast<double>(dataCtrl->getAxisPercentage(model::AXIS::THRUST)*100));
-  ui->yaw_slide->setValue((static_cast<double>(dataCtrl->getAxisPercentage(model::AXIS::YAW))*100)-50);
-  ui->pitch_slide->setValue((static_cast<double>(dataCtrl->getAxisPercentage(model::AXIS::PITCH))*100)-50);
-  ui->roll_slide->setValue((static_cast<double>(dataCtrl->getAxisPercentage(model::AXIS::ROLL))*100)-50);
+  ui->yaw_slide->setValue((static_cast<double>(dataCtrl->getAxisPercentage(model::AXIS::YAW))*100));
+  ui->pitch_slide->setValue((static_cast<double>(dataCtrl->getAxisPercentage(model::AXIS::PITCH))*100));
+  ui->roll_slide->setValue((static_cast<double>(dataCtrl->getAxisPercentage(model::AXIS::ROLL))*100));
 
   ui->channel1->setValue(static_cast<int>(dataCtrl->getChannelValue(model::CHANNELS::CH1)*100));
   ui->channel2->setValue(static_cast<int>(dataCtrl->getChannelValue(model::CHANNELS::CH2)*100));
@@ -139,13 +139,13 @@ void MainWindow::updateValueWidgets()
 
   //draw markers on plotlines (FIXME: values do not show +/- 100% yet which makes drawing shitty
   int thrust_x, yaw_x, pitch_x, roll_x;
-  thrust_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::THRUST)*200)-100;
+  thrust_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::THRUST)*100);
   m_thrustMarker->setValue(thrust_x, m_thrustCurveYData[thrust_x+100]);
-  yaw_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::YAW)*200)-100;
+  yaw_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::YAW)*100);
   m_yawMarker->setValue(yaw_x, m_yawCurveYData[yaw_x+100]);
-  pitch_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::PITCH)*200)-100;
+  pitch_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::PITCH)*100);
   m_pitchMarker->setValue(pitch_x, m_pitchCurveYData[pitch_x+100]);
-  roll_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::ROLL)*200)-100;
+  roll_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::ROLL)*100);
   m_rollMarker->setValue(roll_x, m_rollCurveYData[roll_x+100]);
   ui->left_plot->replot();
   ui->right_plot->replot();
