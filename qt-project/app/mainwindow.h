@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
+#include <QGraphicsView>
 #include <qwt/qwt_plot_curve.h>
 #include <qwt/qwt_plot_marker.h>
 #include <qwt/qwt_symbol.h>
@@ -37,6 +39,22 @@ private:
   QwtSymbol *m_yawMarkerSymbol;
   QwtSymbol *m_pitchMarkerSymbol;
   QwtSymbol *m_rollMarkerSymbol;
+
+  QGraphicsView *m_joystickView;
+  QGraphicsView *m_arduinoView;
+  QGraphicsScene *m_joystickScene;
+  QGraphicsScene *m_arduinoScene;
+  bool m_joystickActive=false;
+  bool m_arduinoActive=false;
+  QPixmap *m_joystickGreen;
+  QPixmap *m_joystickRed;
+  QPixmap *m_arduinoGreen;
+  QPixmap *m_arduinoRed;
+  QTimer *m_joystickTimer;
+  QTimer *m_arduinoTimer;
+
+  void refreshJoystick();
+  void refreshArduino();
 
 public:
   explicit MainWindow(QWidget *parent = nullptr);

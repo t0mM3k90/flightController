@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>resources/arduino_red_96.png</file>
+        <file>resources/arduino_green_96.png</file>
+        <file>resources/joystick_green_96.png</file>
+        <file>resources/joystick_red_96.png</file>
+    </qresource>
+</RCC>

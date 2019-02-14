@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1176</width>
-    <height>748</height>
+    <height>773</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -438,13 +438,6 @@
        </layout>
       </item>
      </layout>
-    </item>
-    <item>
-     <widget class="QLabel" name="lblChannelOut">
-      <property name="text">
-       <string>(0,0,0,0,0,0,0,0)</string>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>

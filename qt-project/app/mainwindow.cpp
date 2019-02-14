@@ -110,9 +110,62 @@ MainWindow::MainWindow(QWidget *parent) :
   m_rollMarker->attach(ui->right_plot);
 
   //(better viewability on ASUS-Netbook)
-  this->setGeometry(0,60,1018,689);
+  this->setGeometry(0,60,1018,682);
+
+  //statusbar
+  m_joystickView = new QGraphicsView(this);
+  m_arduinoView = new QGraphicsView(this);
+  m_joystickScene = new QGraphicsScene(this);
+  m_arduinoScene = new QGraphicsScene(this);
+  m_joystickGreen = new QPixmap(":images/resources/joystick_green_96.png");
+  m_joystickRed = new QPixmap(":images/resources/joystick_red_96.png");
+  m_arduinoGreen = new QPixmap(":images/resources/arduino_green_96.png");
+  m_arduinoRed = new QPixmap(":images/resources/arduino_red_96.png");
+  m_joystickView->setMaximumSize(30,30);
+  m_arduinoView->setMaximumSize(30,30);
+  m_joystickScene->addPixmap(m_joystickRed->scaled(29,29));
+  m_arduinoScene->addPixmap(m_arduinoRed->scaled(29,29));
+  m_joystickView->setScene(m_joystickScene);
+  m_arduinoView->setScene(m_arduinoScene);
+  m_joystickTimer = new QTimer(this);
+  m_arduinoTimer = new QTimer(this);
+  m_joystickTimer->setSingleShot(false);
+  m_joystickTimer->setInterval(50);
+  m_arduinoTimer->setSingleShot(false);
+  m_arduinoTimer->setInterval(50);
+
+  ui->statusBar->addPermanentWidget(m_joystickView);
+  ui->statusBar->addPermanentWidget(m_arduinoView);
+  ui->statusBar->addPermanentWidget(new QLabel(), 1); //spacer only
+
+  connect(m_joystickTimer, &QTimer::timeout, [this](){this->m_joystickActive = !this->m_joystickActive; this->refreshJoystick();});
+  connect(m_arduinoTimer, &QTimer::timeout, [this](){this->m_arduinoActive = !this->m_arduinoActive; this->refreshArduino();});
 
   on_action_Clear_Trims_triggered();
+}
+
+void MainWindow::refreshJoystick()
+{
+  if(m_joystickActive)
+  {
+    m_joystickScene->addPixmap(m_joystickGreen->scaled(29,29));
+  } else
+  {
+    m_joystickScene->addPixmap(m_joystickRed->scaled(29,29));
+    m_joystickTimer->stop();
+  }
+}
+
+void MainWindow::refreshArduino()
+{
+  if(m_arduinoActive)
+  {
+    m_arduinoScene->addPixmap(m_arduinoGreen->scaled(29,29));
+  } else
+  {
+    m_arduinoScene->addPixmap(m_arduinoRed->scaled(29,29));
+    m_arduinoTimer->stop();
+  }
 }
 
 MainWindow::~MainWindow()
@@ -161,6 +214,10 @@ void MainWindow::on_action_Exit_triggered()
 
 void MainWindow::on_trim_thrust_valueChanged(double value)
 {
+  //TESTONLY
+  if(!m_joystickTimer->isActive())
+    m_joystickTimer->start();
+  //FIXME: DELETE UNTIL HERE
   ui->lbl_trimThrus->setText(QString::number(static_cast<int>(value)));
   DataController::getInstance().trimValueChanged(model::AXIS::THRUST, static_cast<int16_t>(value));
   updateValueWidgets();
@@ -168,6 +225,11 @@ void MainWindow::on_trim_thrust_valueChanged(double value)
 
 void MainWindow::on_trim_yaw_valueChanged(double value)
 {
+
+  //TESTONLY
+  if(!m_arduinoTimer->isActive())
+    m_arduinoTimer->start();
+  //FIXME: DELETE UNTIL HERE
   ui->lbl_trimYaw->setText(QString::number(static_cast<int>(value)));
   DataController::getInstance().trimValueChanged(model::AXIS::YAW, static_cast<int16_t>(value));
   updateValueWidgets();
