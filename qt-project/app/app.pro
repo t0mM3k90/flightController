@@ -28,14 +28,16 @@ SOURCES += \
         datacontroller.cpp \
         datamodels.cpp \
         settingsdialog.cpp \
-        settingsmanager.cpp
+        settingsmanager.cpp \
+    arduinowriter.cpp
 
 HEADERS += \
         mainwindow.h \
         datacontroller.h \
         datamodels.h \
         settingsdialog.h \
-        settingsmanager.h
+        settingsmanager.h \
+    arduinowriter.h
 
 FORMS += \
         mainwindow.ui \

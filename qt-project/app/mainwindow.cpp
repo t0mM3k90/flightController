@@ -207,6 +207,18 @@ void MainWindow::updateValueWidgets()
 
 // ************************** GUI SLOTS **************************
 
+void MainWindow::joyStickTriggered()
+{
+  if(!m_joystickTimer->isActive())
+    m_joystickTimer->start();  //start the timer, that toggles the JOYSTICK_INDICATOR from red to green
+}
+
+void MainWindow::arduinoTriggered()
+{
+  if(!m_arduinoTimer->isActive())
+    m_arduinoTimer->start(); //start the timer, that toggles the ARDUINO_INDICATOR from red to green
+}
+
 void MainWindow::on_action_Exit_triggered()
 {
   std::exit(0);
@@ -214,10 +226,6 @@ void MainWindow::on_action_Exit_triggered()
 
 void MainWindow::on_trim_thrust_valueChanged(double value)
 {
-  //TESTONLY
-  if(!m_joystickTimer->isActive())
-    m_joystickTimer->start();
-  //FIXME: DELETE UNTIL HERE
   ui->lbl_trimThrus->setText(QString::number(static_cast<int>(value)));
   DataController::getInstance().trimValueChanged(model::AXIS::THRUST, static_cast<int16_t>(value));
   updateValueWidgets();
@@ -225,11 +233,6 @@ void MainWindow::on_trim_thrust_valueChanged(double value)
 
 void MainWindow::on_trim_yaw_valueChanged(double value)
 {
-
-  //TESTONLY
-  if(!m_arduinoTimer->isActive())
-    m_arduinoTimer->start();
-  //FIXME: DELETE UNTIL HERE
   ui->lbl_trimYaw->setText(QString::number(static_cast<int>(value)));
   DataController::getInstance().trimValueChanged(model::AXIS::YAW, static_cast<int16_t>(value));
   updateValueWidgets();

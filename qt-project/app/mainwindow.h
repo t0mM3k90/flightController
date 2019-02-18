@@ -85,6 +85,9 @@ public slots:
   void onPitchExpoChanged(int value);
   void onRollExpoChanged(int value);
 
+  void joyStickTriggered();
+  void arduinoTriggered();
+
 private:
   Ui::MainWindow *ui;
 
