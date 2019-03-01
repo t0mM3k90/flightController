@@ -15,6 +15,6 @@ void ArduinoWriter::start()
 
 void ArduinoWriter::transmitData()
 {
-  std::cout << "transmit data" << std::endl;
+  //std::cout << "transmit data" << std::endl;
   emit dataTransmitted();
 }

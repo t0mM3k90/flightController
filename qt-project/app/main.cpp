@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
   QApplication a(argc, argv);
 
   QThread arduinoThread(&a);
-  //DataController data_ctrl;
-  //SettingsManager setting_ctrl;
+  DataController::getInstance(); //initialize DataController
+  SettingsManager::getInstance(); //initialize SettingsManager
   ArduinoWriter aw;
   MainWindow w;
 

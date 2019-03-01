@@ -18,12 +18,8 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 private:
   void updateValueWidgets();
-
-  QVector<double> m_xData;
-  QVector<double> m_thrustCurveYData;
-  QVector<double> m_yawCurveYData;
-  QVector<double> m_pitchCurveYData;
-  QVector<double> m_rollCurveYData;
+  void refreshJoystick();
+  void refreshArduino();
 
   QwtPlotCurve m_thrustCurve;
   QwtPlotCurve m_yawCurve;
@@ -52,9 +48,6 @@ private:
   QPixmap *m_arduinoRed;
   QTimer *m_joystickTimer;
   QTimer *m_arduinoTimer;
-
-  void refreshJoystick();
-  void refreshArduino();
 
 public:
   explicit MainWindow(QWidget *parent = nullptr);
@@ -90,8 +83,6 @@ public slots:
 
 private:
   Ui::MainWindow *ui;
-
-  void recalculateCurve(int p, QVector<double> &yData);
 };
 
 #endif // MAINWINDOW_H

@@ -3,26 +3,19 @@
 #include "qwt/qwt_plot_grid.h"
 #include "settingsdialog.h"
 #include <iostream>
+#include "datamodels.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
+  const QVector<double>& xData = DataController::getInstance().getCurveXData();
 
-  //initialize the vectors for the curves
-  for(int x=-100;x<=100;++x)
-  {
-    m_xData.append(x);
-    m_thrustCurveYData.append(x);
-    m_yawCurveYData.append(x);
-    m_pitchCurveYData.append(x);
-    m_rollCurveYData.append(x);
-  }
-  m_thrustCurve.setSamples(m_xData, m_thrustCurveYData);
-  m_yawCurve.setSamples(m_xData, m_yawCurveYData);
-  m_pitchCurve.setSamples(m_xData, m_pitchCurveYData);
-  m_rollCurve.setSamples(m_xData, m_rollCurveYData);
+  m_thrustCurve.setSamples(xData, DataController::getInstance().getCurveData(AXIS::THRUST));
+  m_yawCurve.setSamples(xData, DataController::getInstance().getCurveData(AXIS::YAW));
+  m_pitchCurve.setSamples(xData, DataController::getInstance().getCurveData(AXIS::PITCH));
+  m_rollCurve.setSamples(xData, DataController::getInstance().getCurveData(AXIS::ROLL));
 
   //setting colors for the curves
   m_thrustCurve.setPen(Qt::black, 1.0);
@@ -193,13 +186,13 @@ void MainWindow::updateValueWidgets()
   //draw markers on plotlines (FIXME: values do not show +/- 100% yet which makes drawing shitty
   int thrust_x, yaw_x, pitch_x, roll_x;
   thrust_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::THRUST)*100);
-  m_thrustMarker->setValue(thrust_x, m_thrustCurveYData[thrust_x+100]);
+  m_thrustMarker->setValue(thrust_x, DataController::getInstance().getCurveData(AXIS::THRUST)[thrust_x+100]);
   yaw_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::YAW)*100);
-  m_yawMarker->setValue(yaw_x, m_yawCurveYData[yaw_x+100]);
+  m_yawMarker->setValue(yaw_x, DataController::getInstance().getCurveData(AXIS::YAW)[yaw_x+100]);
   pitch_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::PITCH)*100);
-  m_pitchMarker->setValue(pitch_x, m_pitchCurveYData[pitch_x+100]);
+  m_pitchMarker->setValue(pitch_x, DataController::getInstance().getCurveData(AXIS::PITCH)[pitch_x+100]);
   roll_x = static_cast<int>(dataCtrl->getAxisPercentage(model::AXIS::ROLL)*100);
-  m_rollMarker->setValue(roll_x, m_rollCurveYData[roll_x+100]);
+  m_rollMarker->setValue(roll_x, DataController::getInstance().getCurveData(AXIS::ROLL)[roll_x+100]);
   ui->left_plot->replot();
   ui->right_plot->replot();
 
@@ -316,29 +309,41 @@ void MainWindow::on_invertChannel8_stateChanged(int state)
 
 void MainWindow::onThrustExpoChanged(int value)
 {
-  recalculateCurve(value, m_thrustCurveYData);
-  m_thrustCurve.setSamples(m_xData, m_thrustCurveYData);
+  DataController::getInstance().expoChanged(AXIS::THRUST, value);
+  m_thrustCurve.setSamples(DataController::getInstance().getCurveXData(), DataController::getInstance().getCurveData(AXIS::THRUST));
+  int thrust_x;
+  thrust_x = static_cast<int>(DataController::getInstance().getAxisPercentage(model::AXIS::THRUST)*100);
+  m_thrustMarker->setValue(thrust_x, DataController::getInstance().getCurveData(AXIS::THRUST)[thrust_x+100]);
   ui->left_plot->replot();
 }
 
 void MainWindow::onYawExpoChanged(int value)
 {
-  recalculateCurve(value, m_yawCurveYData);
-  m_yawCurve.setSamples(m_xData, m_yawCurveYData);
+  DataController::getInstance().expoChanged(AXIS::YAW, value);
+  m_yawCurve.setSamples(DataController::getInstance().getCurveXData(), DataController::getInstance().getCurveData(AXIS::YAW));
+  int yaw_x;
+  yaw_x = static_cast<int>(DataController::getInstance().getAxisPercentage(model::AXIS::YAW)*100);
+  m_yawMarker->setValue(yaw_x, DataController::getInstance().getCurveData(AXIS::YAW)[yaw_x+100]);
   ui->left_plot->replot();
 }
 
 void MainWindow::onPitchExpoChanged(int value)
 {
-  recalculateCurve(value, m_pitchCurveYData);
-  m_pitchCurve.setSamples(m_xData, m_pitchCurveYData);
+  DataController::getInstance().expoChanged(AXIS::PITCH, value);
+  m_pitchCurve.setSamples(DataController::getInstance().getCurveXData(), DataController::getInstance().getCurveData(AXIS::PITCH));
+  int pitch_x;
+  pitch_x = static_cast<int>(DataController::getInstance().getAxisPercentage(model::AXIS::PITCH)*100);
+  m_pitchMarker->setValue(pitch_x, DataController::getInstance().getCurveData(AXIS::PITCH)[pitch_x+100]);
   ui->right_plot->replot();
 }
 
 void MainWindow::onRollExpoChanged(int value)
 {
-  recalculateCurve(value, m_rollCurveYData);
-  m_rollCurve.setSamples(m_xData, m_rollCurveYData);
+  DataController::getInstance().expoChanged(AXIS::ROLL, value);
+  m_rollCurve.setSamples(DataController::getInstance().getCurveXData(), DataController::getInstance().getCurveData(AXIS::ROLL));
+  int roll_x;
+  roll_x = static_cast<int>(DataController::getInstance().getAxisPercentage(model::AXIS::ROLL)*100);
+  m_rollMarker->setValue(roll_x, DataController::getInstance().getCurveData(AXIS::ROLL)[roll_x+100]);
   ui->right_plot->replot();
 }
 
@@ -346,20 +351,4 @@ void MainWindow::on_action_Settings_triggered()
 {
     SettingsDialog *dialog = new SettingsDialog(this);
     dialog->show();
-}
-
-// ************************** PRIVATE GUI FUNCTIONS **************************
-
-void MainWindow::recalculateCurve(int p, QVector<double> &yData)
-{
-  auto f1 = [](double x){return x;};
-  auto f2 = [](double x){return 100*std::pow(x/100.0, 3);};
-  auto sig = [](int p){return 2/(1 + std::exp(-1*p/30.0))-1;};
-
-  yData.clear();
-  for(int x=-100; x<=100; ++x)
-  {
-    double y = f1(x) + (f2(x) - f1(x))*sig(p);
-    yData.append(y);
-  }
 }

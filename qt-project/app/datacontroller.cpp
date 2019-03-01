@@ -10,6 +10,16 @@ DataController::DataController(QObject *parent) : QObject(parent),
   m_aux3(0,1),
   m_aux4(0,1)
 {
+  //initialize the vectors for the curves
+  for(int x=-100;x<=100;++x)
+  {
+    m_xData.append(x);
+    m_thrustCurveYData.append(x);
+    m_yawCurveYData.append(x);
+    m_pitchCurveYData.append(x);
+    m_rollCurveYData.append(x);
+  }
+
   map.emplace(AXIS::THRUST, std::make_tuple(&m_thrust,&m_ch1));
   map.emplace(AXIS::YAW,    std::make_tuple(&m_yaw,&m_ch2));
   map.emplace(AXIS::PITCH,  std::make_tuple(&m_pitch,&m_ch3));
@@ -32,6 +42,56 @@ void DataController::trimValueChanged(AXIS a, int16_t trim)
   ax->m_trim = trim;
   float perc = ax->percentage();
   getChannel(a)->percentage(0.5f + 0.5f*perc);
+}
+
+void DataController::expoChanged(AXIS a, int p)
+{
+  switch(a)
+  {
+    case AXIS::THRUST:
+      {
+        recalculateCurve(p, m_thrustCurveYData);
+        break;
+      }
+    case AXIS::PITCH:
+      {
+        recalculateCurve(p, m_pitchCurveYData);
+        break;
+      }
+    case AXIS::ROLL:
+      {
+        recalculateCurve(p, m_rollCurveYData);
+        break;
+      }
+    case AXIS::YAW:
+      {
+        recalculateCurve(p, m_yawCurveYData);
+        break;
+      }
+    default:
+      return;
+  }
+
+}
+
+const QVector<double>& DataController::getCurveXData()
+{
+  return m_xData;
+}
+
+const QVector<double>& DataController::getCurveData(AXIS a)
+{
+  switch(a)
+  {
+    case AXIS::THRUST:
+      return m_thrustCurveYData;
+    case AXIS::PITCH:
+      return m_pitchCurveYData;
+    case AXIS::ROLL:
+      return m_rollCurveYData;
+    case AXIS::YAW:
+      return m_yawCurveYData;
+  }
 }
 
 int16_t DataController::getRawAxisValue(AXIS a)
@@ -104,4 +164,18 @@ channel* DataController::getChannel(AXIS a)
 {
   channel* ch = static_cast<channel*>(std::get<1>(map.at(a)));
   return ch;
+}
+
+void DataController::recalculateCurve(int p, QVector<double> &yData)
+{
+  auto f1 = [](double x){return x;};
+  auto f2 = [](double x){return 100*std::pow(x/100.0, 3);};
+  auto sig = [](int p){return 2/(1 + std::exp(-1*p/30.0))-1;};
+
+  yData.clear();
+  for(int x=-100; x<=100; ++x)
+  {
+    double y = f1(x) + (f2(x) - f1(x))*sig(p);
+    yData.append(y);
+  }
 }
